@@ -1,0 +1,68 @@
+Model the following University information system as a graph model, and
+answer the following queries using Cypher.
+University has various departments like Physics, Geography, Computer etc.
+Each department conducts various courses and a course may be conducted by
+multiple departments. Every course may have recommendations provided by
+people.
+1. Identify the labels and relationships, along with their properties, anddraw
+a high-level Graph model. [3]
+2. Create nodes and relationships, along with their properties, and
+visualize your actual Graph model. [3]
+3. Answer the following Queries :
+a. List the details of all the departments in the university. [3]
+b. List the names of the courses provided by Physics department. [3]
+c. List the most recommended course in Geography department. [4]
+d. List the names of common courses across Mathematics and
+computer department. [4]
+
+# Step 1: Open MongoDB    using mongosh
+mongosh
+
+# Step 2: Create a database for the Library information system
+use library_information_db
+
+# Step 3: Create collections for students, books, and book types
+db.books.insertMany([
+  { _id: 1, name: "Data Structures", type: "text", rating: 4.5 },
+  { _id: 2, name: "Introduction to Algorithms", type: "reference", rating: 4.7 },
+  { _id: 3, name: "Advanced Databases", type: "bibliography", rating: 4.3 },
+  { _id: 4, name: "Artificial Intelligence", type: "text", rating: 4.9 },
+  { _id: 5, name: "Machine Learning", type: "reference", rating: 4.8 }
+])
+
+db.students.insertMany([
+  { _id: 1, name: "John", books_bought: ["text", "reference"], recommendations: { "Data Structures": 5, "Introduction to Algorithms": 4.5 } },
+  { _id: 2, name: "Alice", books_bought: ["text", "bibliography"], recommendations: { "Artificial Intelligence": 5, "Advanced Databases": 4 } },
+  { _id: 3, name: "Bob", books_bought: ["reference"], recommendations: { "Machine Learning": 4.5 } }
+])
+
+# Step 4: Write the Cypher queries to fetch the required results
+
+# a. List the books of type “text”
+db.books.aggregate([
+  { $match: { type: "text" } },
+  { $project: { name: 1, type: 1 } }
+])
+
+# b. List the name of students who bought both "text" and "reference" types of books
+db.students.aggregate([
+  { $match: { books_bought: { $all: ["text", "reference"] } } },
+  { $project: { name: 1 } }
+])
+
+# c. List the most recommended book type
+db.books.aggregate([
+  { $group: { _id: "$type", avg_rating: { $avg: "$rating" } } },
+  { $sort: { avg_rating: -1 } },
+  { $limit: 1 },
+  { $project: { _id: 0, type: "$_id", avg_rating: 1 } }
+])
+
+# d. List the students who bought more than one type of book
+db.students.aggregate([
+  { $match: { books_bought: { $size: { $gte: 2 } } } },
+  { $project: { name: 1 } }
+])
+
+# Step 5: Exit MongoDB   
+exit

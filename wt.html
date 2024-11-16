@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Entry Form</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: white;
+        }
+        .form-container {
+            width: 300px;
+            padding: 20px;
+            background-color: skyblue;
+            border: 2px solid black;
+        }
+        h4 {
+            color: red;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 5px;
+            margin: 5px 0;
+        }
+        .form-actions button {
+            padding: 5px 10px;
+        }
+        .inline {
+            display: inline-block;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2 style="text-align:center; color:red;">ENTRY FORM</h2>
+        <form>
+            <h4>Name:</h4>
+            <input type="text" name="name">
+
+            <h4>Age:</h4>
+            <input type="number" name="age">
+
+            <h4>Address:</h4>
+            <textarea rows="3"></textarea>
+
+            <h4>Sex:</h4>
+            <span class="inline"><input type="radio" name="sex" value="female"> Female</span>
+            <span class="inline"><input type="radio" name="sex" value="male"> Male</span>
+
+            <h4>Nationality:</h4>
+            <select>
+                <option>India</option>
+                <option>USA</option>
+                <option>UK</option>
+                <option>Canada</option>
+            </select>
+
+            <h4>Languages Known:</h4>
+            <span class="inline"><input type="checkbox" value="C"> C</span>
+            <span class="inline"><input type="checkbox" value="C++"> C++</span>
+            <span class="inline"><input type="checkbox" value="JAVA"> JAVA</span>
+
+            <h4>Password:</h4>
+            <input type="password" name="password">
+
+            <div class="form-actions">
+                <button type="reset">Reset</button>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
